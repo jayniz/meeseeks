@@ -1,0 +1,19 @@
+version: '3'
+services:
+  meeseeks:
+    command: sleep infinity
+    environment:
+      - CI=${CI}
+      - TRAVIS_COMMIT=${TRAVIS_COMMIT}
+    volumes:
+      - .:/src:cached
+      - ./.bash_history:/root/.bash_history:delegated
+      - meeseeks-bundler-cache:/usr/local/bundle
+      - ~/.gem:/root/.gem:ro
+      - ~/.gitconfig:/root/.gitconfig:ro
+      - ~/.git:/root/.git:ro
+    image: coup-mobility/meeseeks
+volumes:
+  meeseeks-bundler-cache:
+  meeseeks-rails-bundler-cache:
+
