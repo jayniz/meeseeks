@@ -55,4 +55,18 @@ RSpec.describe Meeseeks do
       expect(meeseeks.record('test', 'metric', 1)).to be_falsy
     end
   end
+
+  context 'max queue size' do
+    it 'limits the queue size' do
+      m = Meeseeks::Meeseeks.new(
+        data_submission_url: 'http://localhost:2202',
+        interval: 1000,
+        max_batch_size: 10,
+        max_queue_size: 2
+      )
+      expect(m.record('foo', 'bar', 1)).to be_truthy
+      expect(m.record('foo', 'bar', 1)).to be_truthy
+      expect(m.record('foo', 'bar', 1)).to be_falsy
+    end
+  end
 end

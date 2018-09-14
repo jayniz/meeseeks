@@ -5,6 +5,8 @@
 
 # Meeseeks
 
+⚠️ Do not use in production ⚠️
+
 ## Usage
 
 Asynchronously submit metrics to a Circonus HTTPTrap:
@@ -13,9 +15,10 @@ Asynchronously submit metrics to a Circonus HTTPTrap:
 > m = Meeseeks::Meeseeks.new(
   data_submission_url: 'https://api.circonus.com/module/httptrap/2ds89as2-29e3-4155-a54a-4b7261419e11/secret',
   interval: 60,
-  max_batch_size: 100
+  max_batch_size: 100,
+  max_queue_size: 10_000
 )
-=> <
+=> #<Meeseeks::Meeseeks:0x00005640e59dd380 … >
 >  m.record('group', 'metric', 22.02)
 => true
 ```
@@ -33,6 +36,10 @@ Meeseeks will instrument itself on Circonus. Look for these metrics:
 
 After checking out the repo, run `make build` - you need only docker on your machine, no ruby, rvm, or any of that.
 
+### Launch a shell or console
+
+To try it out locally while developing, you can `make shell` to open a shell in a container where the gem's dependencies are installed, and you can use `make console` as an alias for entering `make shell` and `rake console`.
+
 ### Run the tests
 
 During development, you can just keep `make guard` running and it will test files as you edit them. You can also run `make test` to run all of the tests.
@@ -43,11 +50,11 @@ Run `make rubocop`.
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/jayniz/meeseeks. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://github.com/coup-mobility/meeseeks. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 ## Code of Conduct
 
-Everyone interacting in the Meeseeks project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/jayniz/meeseeks/blob/master/CODE_OF_CONDUCT.md).
+Everyone interacting in the Meeseeks project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/coup-mobility/meeseeks/blob/master/CODE_OF_CONDUCT.md).
 
 
 ## Acknowledgements
