@@ -1,34 +1,34 @@
 # Meeseeks
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/meeseeks`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
-
-## Installation
-
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'meeseeks'
-```
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install meeseeks
-
 ## Usage
 
-TODO: Write usage instructions here
+Asynchronously submit metrics to a Circonus HTTPTrap:
+
+```ruby
+> m = Meeseeks::Meeseeks.new(data_submission_url: 'https://api.circonus.com/module/httptrap/2ds89as2-29e3-4155-a54a-4b7261419e11/secret', interval: 60, max_batch_size: 100)
+=>  m.record('group', 'metric', 22.02)
+```
+
+### Meeseeks statistics
+
+Meeseeks will instrument itself on Circonus. Look for these metrics:
+
+- ``meeseeks`batch_size`` (how many measurements were submitted per request to Circonus?)
+- ``meeseeks`cycle_count`` (how many intervals did this meeseeks instance do?)
+- ``meeseeks`queue_size`` (how many measurements are waiting in the queue to be submitted?)
+- ``meeseeks`request_count`` (how many requests to Circonus did this meeseeks instance do?)
 
 ## Development
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+After checking out the repo, run `make build` - you need only docker on your machine, no ruby, rvm, or any of that.
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+### Run the tests
+
+During development, you can just keep `make guard` running and it will test files as you edit them. You can also run `make test` to run all of the tests.
+
+### Automatically fix rubocop offenses
+
+Run `make rubocop`.
 
 ## Contributing
 

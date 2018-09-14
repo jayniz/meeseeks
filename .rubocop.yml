@@ -6,3 +6,7 @@ AllCops:
     - Guardfile
 Documentation:
   Enabled: false
+
+Metrics/BlockLength:
+  Exclude:
+    - spec/**/*

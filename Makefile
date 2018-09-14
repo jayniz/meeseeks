@@ -45,7 +45,7 @@ guard-shell:
 	docker-compose -p meeseeks-guard run meeseeks bash -c "(bundle check || bundle install) && bash"
 
 rubocop:
-	docker-compose run meeseeks bash -l -c "bundle exec rubocop -a"
+	docker-compose run meeseeks bash -l -c "(bundle check || bundle install) && bundle exec rubocop -a"
 
 
 test: guard-down guard-up
