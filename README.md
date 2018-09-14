@@ -1,3 +1,5 @@
+![](https://travis-ci.com/coup-mobility/meeseeks.svg?branch=master)
+
 # Meeseeks
 
 ## Usage
