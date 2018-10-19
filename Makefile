@@ -27,7 +27,7 @@ bundle:
 	docker-compose run meeseeks bash -l -c "bundle check || bundle install"
 
 console: bundle
-	docker-compose run meeseeks bash -l -c "bundle exec bin/console"
+	docker-compose exec meeseeks bash -l -c "bundle exec bin/console" || docker-compose run meeseeks bash -l -c "bundle exec bin/console"
 
 guard-down:
 	docker-compose -p meeseeks-guard down --remove-orphans

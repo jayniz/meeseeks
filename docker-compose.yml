@@ -15,5 +15,3 @@ services:
     image: coup-mobility/meeseeks
 volumes:
   meeseeks-bundler-cache:
-  meeseeks-rails-bundler-cache:
-
