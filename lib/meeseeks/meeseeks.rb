@@ -24,7 +24,7 @@ module Meeseeks
       @max_batch_size = max_batch_size ||
                         ENV.fetch('MEESEEKS_MAX_BATCH_SIZE', 1_000).to_i
       @data_submission_url = data_submission_url ||
-                             ENV.fetch('MEESEEKS_DATA_TRANSMISSION_URL')
+                             ENV.fetch('MEESEEKS_DATA_SUBMISSION_URL')
 
       create_http_trap
       start_harvester
