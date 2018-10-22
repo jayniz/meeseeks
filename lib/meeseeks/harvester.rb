@@ -17,6 +17,13 @@ module Meeseeks
       @lock = Mutex.new
     end
 
+    def stats
+      {
+        cycle_count: @cycle_count,
+        running: running?
+      }
+    end
+
     def start
       @continue = true
       return if @thread&.alive?
@@ -61,15 +68,15 @@ module Meeseeks
         rescue StandardError
           # TODO: think about whether or not this is a good idea. It's nice to
           # recover from the occasional HTTP hickup, but when we can't submit
-          # to Circonus for whatever reason, we'll fill up the RAM. Do we want
-          # to implement limited retries here, or do we want to impose a max
-          # length on the queue, or what do we want to do?
+          # to Circonus at all for whatever reason, we'll fill up the RAM. Do we
+          # want to implement limited retries here, or do we want to impose a
+          # max length on the queue, or what do we want to do?
           batch.map { |d| @queue.push(d) }
         end
 
         # Even if the batch is empty, we want to submit our own statistics
         # for this cycle, and that's why we don't break before the submit
-        break if batch.empty?
+        break if @queue.empty?
       end
     end
 
@@ -90,7 +97,7 @@ module Meeseeks
       { meeseeks: {} }.tap do |stats|
         stats[:meeseeks].merge!(Payload.for('batch_size', batch_size))
         stats[:meeseeks].merge!(Payload.for('queue_size', @queue.size))
-        stats[:meeseeks].merge!(Payload.for('request_count', submit_count))
+        stats[:meeseeks].merge!(Payload.for('submit_count', submit_count))
         stats[:meeseeks].merge!(Payload.for('cycle_count', @cycle_count))
       end
     end

@@ -7,6 +7,7 @@
 
 ⚠️ Do not use in production ⚠️
 
+
 ## Usage
 
 Asynchronously submit metrics to a Circonus HTTPTrap:
@@ -36,34 +37,72 @@ and use the singleton (to the same effect as the example above):
 Meeseeks.instance.record('group', 'metric', 22.02)
 ```
 
+
 ### Meeseeks statistics
 
-Meeseeks will instrument itself on Circonus. Look for these metrics:
+Meeseeks will instrument itself on Circonus (these metrics will be added to each
+batch submitted to Circonus, so for `max_batch_size: 100` we will really submit
+104 metrics each time). Look for these metrics:
 
 - ``meeseeks`batch_size`` (how many measurements were submitted per request to Circonus?)
 - ``meeseeks`cycle_count`` (how many intervals did this meeseeks instance do?)
 - ``meeseeks`queue_size`` (how many measurements are waiting in the queue to be submitted?)
-- ``meeseeks`request_count`` (how many requests to Circonus did this meeseeks instance do?)
+- ``meeseeks`submit_count`` (how many requests to Circonus did this meeseeks instance do?)
+
+
+### Debugging
+
+We tried to make Meeseeks inspectable:
+
+```ruby
+# Basic stats
+> Meeseeks.stats
+=> {
+     "queue_size": 0,
+     "harvester": {
+       "cycle_count": 7,
+       "running": true
+     },
+     "http_trap": {
+       "submit_count": 7,
+       "last_submit_at": "2018-10-19 10:42:35 +0000"
+     }
+   }
+
+# You can even dive into the requests to Circonus, and the responses
+# received (including bodies):
+> Meeseeks.http_trap.last.request
+=> #<Net::HTTP::Put PUT>
+> Meeseeks.http_trap.last.response
+=> #<Net::HTTPOK 200 OK readbody=true>
+
+```
+
 
 ## Development
 
 After checking out the repo, run `make build` - you need only docker on your machine, no ruby, rvm, or any of that.
 
+
 ### Launch a shell or console
 
 To try it out locally while developing, you can `make shell` to open a shell in a container where the gem's dependencies are installed, and you can use `make console` as an alias for entering `make shell` and `rake console`.
+
 
 ### Run the tests
 
 During development, you can just keep `make guard` running and it will test files as you edit them. You can also run `make test` to run all of the tests.
 
+
 ### Automatically fix rubocop offenses
 
 Run `make rubocop`.
 
+
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/coup-mobility/meeseeks. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+
 
 ## Code of Conduct
 

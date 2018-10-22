@@ -54,6 +54,18 @@ RSpec.describe Meeseeks do
       expect(meeseeks).to receive(:record!).and_raise(Meeseeks::Error.new)
       expect(meeseeks.record('test', 'metric', 1)).to be_falsy
     end
+
+    it 'stats' do
+      expect(meeseeks.stats).to eq(queue_size: 30,
+                                   harvester: {
+                                     cycle_count: 0,
+                                     running: true
+                                   },
+                                   http_trap: {
+                                     submit_count: 0,
+                                     last_submit_at: nil
+                                   })
+    end
   end
 
   context 'max queue size' do

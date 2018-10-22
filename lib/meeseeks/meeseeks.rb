@@ -44,6 +44,14 @@ module Meeseeks
       false
     end
 
+    def stats
+      {
+        queue_size: @queue.size,
+        harvester: @harvester.stats,
+        http_trap: @http_trap.stats
+      }
+    end
+
     private
 
     def create_http_trap

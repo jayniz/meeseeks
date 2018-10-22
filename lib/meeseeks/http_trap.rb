@@ -22,6 +22,13 @@ module Meeseeks
       JSON.parse res.body
     end
 
+    def stats
+      {
+        submit_count: @submit_count,
+        last_submit_at: @last&.time
+      }
+    end
+
     private
 
     def request(measurements)
