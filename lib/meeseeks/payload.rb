@@ -14,9 +14,9 @@ module Meeseeks
     def self.for(metric, value, time = DateTime.now)
       {
         metric.to_s => {
-          '_ts'    => time.to_datetime.strftime('%Q'),
+          '_ts'    => time.to_datetime.strftime('%Q').to_i,
           '_value' => value,
-          '_type'  => 'i'
+          '_type'  => 'n'
         }
       }
     end

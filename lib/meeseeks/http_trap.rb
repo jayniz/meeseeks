@@ -3,6 +3,7 @@
 require 'net/http'
 require 'json'
 
+# See https://login.circonus.com/resources/docs/user/Data/CheckTypes/HTTPTrap.html
 module Meeseeks
   class HTTPTrap
     attr_reader :last, :submit_count
