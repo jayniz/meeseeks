@@ -31,7 +31,19 @@ You can also configure Meeseeks via environment variables
 - `MEESEEKS_MAX_BATCH_SIZE=100`
 - `MEESEEKS_MAX_QUEUE_SIZE=10000`
 
-and use the singleton (to the same effect as the example above):
+or via code:
+
+
+```ruby
+> Meeseeks.configure(
+  data_submission_url: 'https://api.circonus.com/module/httptrap/2ds89as2-29e3-4155-a54a-4b7261419e11/secret',
+  interval: 60,
+  max_batch_size: 100,
+  max_queue_size: 10_000
+)
+```
+
+*and then* use the singleton (to the same effect as the first example):
 
 ```ruby
 Meeseeks.instance.record('group', 'metric', 22.02)
