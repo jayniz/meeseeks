@@ -12,16 +12,16 @@ build:
 	docker build -t coup-mobility/meeseeks .
 
 bump-patch:
-	docker-compose run meeseeks gem bump --version patch
+	gem bump --version patch
 
 bump-minor:
-	docker-compose run meeseeks gem bump --version minor
+	gem bump --version minor
 
 bump-major:
-	docker-compose run meeseeks gem bump --version major
+	gem bump --version major
 
 release:
-	docker-compose run meeseeks rake release
+	rake release
 
 bundle:
 	docker-compose run meeseeks bash -l -c "bundle check || bundle install"
