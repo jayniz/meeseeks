@@ -16,7 +16,7 @@ RSpec.describe Meeseeks do
   end
 
   after(:each) do
-    meeseeks.harvester.kill
+    meeseeks.implode!
   end
 
   context 'configuration' do
@@ -57,6 +57,7 @@ RSpec.describe Meeseeks do
 
     it 'stats' do
       expect(meeseeks.stats).to eq(queue_size: 30,
+                                   imploded: false,
                                    harvester: {
                                      cycle_count: 0,
                                      running: true

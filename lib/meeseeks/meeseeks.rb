@@ -17,6 +17,7 @@ module Meeseeks
                    interval: nil,
                    max_batch_size: nil,
                    max_queue_size: nil)
+      @imploded = false
       @queue = Queue.new
       @interval = interval || ENV.fetch('MEESEEKS_INTERVAL', 60).to_i
       @max_queue_size = max_queue_size ||
@@ -25,16 +26,16 @@ module Meeseeks
                         ENV.fetch('MEESEEKS_MAX_BATCH_SIZE', 1_000).to_i
       @data_submission_url = data_submission_url ||
                              ENV.fetch('MEESEEKS_DATA_SUBMISSION_URL')
-
-      create_http_trap
-      start_harvester
+      start
     end
 
     def record!(group, metric, value, time = DateTime.now)
-      Payload.validate_type!(value)
+      return false if @imploded
       return false if @queue.size >= @max_queue_size
 
+      Payload.validate_type!(value)
       @queue.push(Payload.for_group(group, metric, value, time))
+
       true
     end
 
@@ -48,11 +49,27 @@ module Meeseeks
       {
         queue_size: @queue.size,
         harvester: @harvester.stats,
-        http_trap: @http_trap.stats
+        http_trap: @http_trap.stats,
+        imploded: @imploded
       }
     end
 
+    def implode!
+      return if @imploded
+
+      @imploded = true
+      harvester.stop
+      harvester.kill
+      queue.clear
+      queue.close
+    end
+
     private
+
+    def start
+      create_http_trap
+      start_harvester
+    end
 
     def create_http_trap
       @http_trap = HTTPTrap.new(@data_submission_url)
