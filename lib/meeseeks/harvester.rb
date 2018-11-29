@@ -64,7 +64,8 @@ module Meeseeks
         batch = batch_from_queue
 
         begin
-          submit(batch)
+          queue_size = @queue.size
+          submit(batch, queue_size)
         rescue StandardError
           # TODO: think about whether or not this is a good idea. It's nice to
           # recover from the occasional HTTP hickup, but when we can't submit
@@ -93,10 +94,10 @@ module Meeseeks
       batch
     end
 
-    def meeseeks_stats_payload(batch_size)
+    def meeseeks_stats_payload(batch_size, queue_size)
       { meeseeks: {} }.tap do |stats|
         stats[:meeseeks].merge!(Payload.for('batch_size', batch_size))
-        stats[:meeseeks].merge!(Payload.for('queue_size', @queue.size))
+        stats[:meeseeks].merge!(Payload.for('queue_size', queue_size))
         stats[:meeseeks].merge!(Payload.for('submit_count', submit_count))
         stats[:meeseeks].merge!(Payload.for('cycle_count', @cycle_count))
       end
@@ -106,8 +107,8 @@ module Meeseeks
       @http_trap.submit_count
     end
 
-    def submit(measurements)
-      stats = [meeseeks_stats_payload(measurements.length + 1)]
+    def submit(measurements, queue_size)
+      stats = [meeseeks_stats_payload(measurements.length, queue_size)]
       @http_trap.submit(measurements + stats)
     end
   end

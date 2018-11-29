@@ -5,8 +5,7 @@
 
 # Meeseeks
 
-⚠️ Do not use in production ⚠️
-
+Submit measurements asynchronously from your ruby applications to a Circonus HTTPTrap.
 
 ## Usage
 
@@ -58,7 +57,7 @@ batch submitted to Circonus, so for `max_batch_size: 100` we will really submit
 
 - ``meeseeks`batch_size`` (how many measurements were submitted per request to Circonus?)
 - ``meeseeks`cycle_count`` (how many intervals did this meeseeks instance do?)
-- ``meeseeks`queue_size`` (how many measurements are waiting in the queue to be submitted?)
+- ``meeseeks`queue_size`` (how many measurements are waiting in the queue to be submitted)
 - ``meeseeks`submit_count`` (how many requests to Circonus did this meeseeks instance do?)
 
 
@@ -89,6 +88,8 @@ We tried to make Meeseeks inspectable:
 => #<Net::HTTPOK 200 OK readbody=true>
 
 ```
+
+If you want to stop Meeseeks, you can call `my_meeseeks.implode!`.
 
 
 ## Development

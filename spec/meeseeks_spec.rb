@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.describe Meeseeks do
-
   let(:instance) do
     instance = instance_double(Meeseeks::Meeseeks)
     allow(instance).to receive(:implode!)
