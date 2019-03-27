@@ -69,6 +69,18 @@ RSpec.describe Meeseeks do
     end
   end
 
+  context '#time' do
+    it 'calls record' do
+      expect(meeseeks).to receive(:record!).with('test', 'foo', instance_of(DateTime))
+      meeseeks.time('test', 'foo') { 1 + 1 }
+    end
+
+    it 'records an error if the block raises an error' do
+      expect(meeseeks).to receive(:record!).with('test', 'foo-error', instance_of(DateTime))
+      meeseeks.time('test', 'foo') { raise 'boom' }
+    end
+  end
+
   context 'max queue size' do
     it 'limits the queue size' do
       m = Meeseeks::Meeseeks.new(

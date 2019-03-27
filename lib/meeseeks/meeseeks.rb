@@ -45,6 +45,18 @@ module Meeseeks
       false
     end
 
+    def time(group, metric, value)
+      time = DateTime.now
+      begin
+        yield 
+        record!(group, metric, value, time)
+      rescue => StandardError
+        record!(group, "#{metric}-error", value, time)
+      end
+    rescue Error
+      false
+    end
+
     def stats
       {
         queue_size: @queue.size,
